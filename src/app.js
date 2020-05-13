@@ -56,7 +56,7 @@ router.route('/process/videoUpload').post(upload.array('video', 1), function(req
         mimetype = files[0].mimetype;
         size = files[0].size;
 
-        //res.redirect('/views/loading.html');
+        res.redirect('/views/loading.html');
 
     } catch(err) {
         console.dir(err.stack);
@@ -64,12 +64,10 @@ router.route('/process/videoUpload').post(upload.array('video', 1), function(req
 }) // /process/photo
 
 router.route('/views/loading.html').get(function(res, req, next) {
-    res.redirect('/process/extractSkeletoneVector');
+    console.log('loading 페이지 호출');
+    
 })
 
-router.route('/process/extractSkeletoneVector').get(function(res, req, next) {
-    console.log('/precess/extractSkeletoneVector 호출됨');
-})
 
 app.use('/', router);
 
