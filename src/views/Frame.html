@@ -1,13 +1,50 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
-  <title> Dancearch </title>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <title>HTML Iframes</title>
+  <style>
+  @import 'home.css';
+    #grid {
+      border: 5px solid none;
+      display: grid;
+      grid-template-columns: 150px 1fr;
+    }
+    #color{
+      color:white
+    }
+
+    div {
+      border: 1px solid red;
+    }
+  </style>
 </head>
-<frameset cols="20%, *" border=0 framespacing=0 frameborder=0>
-  <frame src="Frame/left.html">
-    <frame name="shut" src="Frame/right.html">
-</frameset>
+
+<body class="home bg-pan-bl">
+  <div class="header flicker-4">
+    DANCEARCH
+  </div>
+  <div id="grid" style="width:1360px;">
+    <div>
+    <br><br><br><br><br><br>
+      <ol>
+        <h3><a id="color" href="./Frame/confirm.html " target="iframe_a">안무 확인</a></h3>
+
+        <br>
+        <h3><a id="color" href="./Frame/register.html " target="iframe_a">안무 등록</a></h3><br>
+
+        <br>
+        <h3><a id="color" href="./Frame/modify.html" target="iframe_a">안무 수정</a> </h3>
+
+        <br>
+        <h3><a id="color" href="./Frame/delete.html" target="iframe_a">안무 삭제</a></h3>
+    </div>
+    <div style="padding-left: 85px;">
+      <iframe src="./Frame/confirm.html" height="600" width="1000"
+      style="border: none;" name="iframe_a"></iframe>
+    </div>
+  </div>
+</body>
 
 </html>
