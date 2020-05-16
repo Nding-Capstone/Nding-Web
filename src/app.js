@@ -2,6 +2,7 @@ var express =require('express');
 var http = require('http');
 var path = require('path');
 var skeleton = require('./modules/extract-skeleton.js');
+var cookieParser = require('cookie-parser');
 
 var app = express();
 var router = express.Router();
@@ -16,6 +17,7 @@ const INPUT_VIDEO_NAME = 'input.mp4';
 app.use('/views', static(path.join(__dirname, 'views')));
 
 app.use(cors());
+app.use(cookieParser());
 
 
 var storage = multer.diskStorage({
@@ -36,7 +38,6 @@ var upload = multer({
 
 
 router.route('/').get(function(req, res, next){
-
     res.redirect('/views/home.html');
 })
 
@@ -61,27 +62,12 @@ router.route('/process/videoUpload').post(upload.array('video', 1), function(req
         // run skeleton python
         
         res.on('finish', function(){
-            const {spawn} = require('child_process');
-
-            console.log('skeleton 실행됨');
-    
-            var largeDataSet = [];
-            // spawn new child process to call the python script
-            // const python = spawn('python', ['test_out/script3.py']);
-            const python = spawn('python', ['./models/extract_skeleton_vector.py']);
-            
-            // collect data from script
-            python.stdout.on('data', function (data) {
-                console.log('Pipe data from python script ...');
-                largeDataSet.push(data);
+            skeleton.run(function(list){
+                console.log('callback : ', list);
+                res.cookie('rank', {
+                    rank: list
+                });
             });
-            
-            // in close event we are sure that stream is from child process is closed
-            python.on('close', (code) => {
-                console.log(`child process close all stdio with code ${code}`);
-               
-            });
-            
         });
 
         res.redirect('/views/loading.html');
