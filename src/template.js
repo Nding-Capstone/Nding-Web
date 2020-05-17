@@ -7,7 +7,6 @@ module.exports = {
       <title>WEB1 - ${title}</title>
       <meta charset="utf-8">
         <style>
-        @import './views/home.css';
         #container{
           background-color:powerblue;
           display:flex;
@@ -22,7 +21,7 @@ module.exports = {
         </style>
     </head>
     <body>
-    <h1><a href="/">관리자</a></h1>
+    <h1><a href="/manager">관리자</a></h1>
   <div id="container" style="margin-top: 100px;">
     <div id="item">
       ${control}
@@ -42,7 +41,7 @@ module.exports = {
     var list = '<ul>';
     var i = 0;
     while (i < Songs.length) {
-      list = list + `<li><a href="/?id=${Songs[i].id}">${Songs[i].title}</a></li>`;
+      list = list + `<li><a href="/manager/song/${Songs[i].id}">${Songs[i].title}</a></li>`;
       i = i + 1;
     }
     list = list + '</ul>';
