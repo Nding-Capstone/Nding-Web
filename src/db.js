@@ -50,7 +50,9 @@ var app = http.createServer(function(request,response){
           var singer = Song[0].singer;
           var list = template.list(Songs);
           var html = template.HTML(title, list,
-            `<h2>${title}</h2>
+            `
+            <h2>${Song[0].id}</h2>
+            <h2>${title}</h2>
             <h3>${singer}</h3>
             <h3>${Song[0].album} 앨범</h3>
             <h3>${Song[0].link} 링크</h3>`,
@@ -73,6 +75,7 @@ var app = http.createServer(function(request,response){
         var html = template.HTML(title, list,
           `
           <form action="/create_process" method="post">
+            <p><input type="text" name="label" placeholder="라벨"></p>
             <p><input type="text" name="title" placeholder="제목"></p>
             <p>
               <input type="text" name="singer" placeholder="가수">
@@ -101,9 +104,9 @@ var app = http.createServer(function(request,response){
       request.on('end', function(){
           var post = qs.parse(body);
           db.query(`
-            INSERT INTO Song (title, singer, album, link)
-              VALUES(?, ?, ?, ?)`,
-            [post.title, post.singer,post.album,post.link],
+            INSERT INTO Song (id, title, singer, album, link)
+              VALUES(? ,?, ?, ?, ?)`,
+            [post.label,post.title, post.singer,post.album,post.link],
             function(error, Song){
               if(error){
                 throw error;
@@ -155,7 +158,7 @@ var app = http.createServer(function(request,response){
       });
       request.on('end', function(){
           var post = qs.parse(body);
-          db.query('UPDATE Song SET title=?, singer=?, album=?, link=?  WHERE id=?', [post.title, post.singer, post.album,post.link,post.id], function(error, result){
+          db.query('UPDATE Song SET title=?, singer=?, album=?, link=?  WHERE id=?', [post.title, post.singer, post.album,post.link,post.label], function(error, result){
             response.writeHead(302, {Location: `/?id=${post.id}`});
             response.end();
           })
