@@ -87,20 +87,27 @@ router.route('/process/videoUpload').post(upload.array('video', 1), function(req
     }
 }) // /process/photo
 
-router.route('/process/runModel').get(function(req, res) {
+router.route('/process/runModel').get(async function(req, res) {
         console.log('run model');
 
-        var datas = [];
+        var datas = [16, 3, 7];
+        res.cookie('rank', {
+            first: datas[0],
+            second: datas[1],
+            third: datas[2]
+        })
         
+        /*
         skeleton.run(function(list){
             datas = list.slice(9, -3).split(',').map(function(item){return parseInt(item, 10)}); 
             console.log(datas);
             res.end();
         })
+        */
         
         
-    /*
-            db.query(`SELECT * FROM Song WHERE id=`+list[0],  function(err, data){
+    
+            db.query(`SELECT * FROM Song WHERE id=`+datas[0],  await function(err, data){
                 console.log('data:', data);
                 res.cookie('first', {
                     title: data[0].title,
@@ -110,7 +117,7 @@ router.route('/process/runModel').get(function(req, res) {
                 })
             });
 
-            db.query(`SELECT * FROM Song WHERE id=`+list[1],  function(err, data){
+            db.query(`SELECT * FROM Song WHERE id=`+datas[1],  await function(err, data){
                 console.log('data:', data);
                 res.cookie('second', {
                     title: data[0].title,
@@ -119,7 +126,8 @@ router.route('/process/runModel').get(function(req, res) {
                     link: data[0].link
                 })
             });
-             db.query(`SELECT * FROM Song WHERE id=`+list[2],  function(err, data){
+
+            db.query(`SELECT * FROM Song WHERE id=`+datas[2],  await function(err, data){
                 console.log('data:', data[0]);
 
                 console.log('data:', data[0].title);
@@ -128,13 +136,13 @@ router.route('/process/runModel').get(function(req, res) {
                     singer: data[0].singer,
                     album: data[0].img,
                     link: data[0].link
-                })     
+                })
+                res.end();     
             });
-        }) */
-
 });
 
 router.route('/process/toResult').post(function(req, res, next){
+
     res.redirect('/views/result.html')
 })
 

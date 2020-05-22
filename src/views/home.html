@@ -28,7 +28,16 @@
            </div>
             <div >
                 <label for="file"><i class="far fa-file-video"></i></label>
-                <button type="reset">RELOAD</button>
+                
+
+            </div>
+
+            <div id="fileCheck" style="display: none">
+                <video id="video" controls></video>
+            
+
+                <div class="btnWrap">
+                    <button type="reset">RELOAD</button>
                     <form
                         method="post"
                         enctype="multipart/form-data"
@@ -40,14 +49,6 @@
                                 onchange="checkVideo(event)"/>
                         <button type="submit" id="nextBtn" name="video">NEXT</button>
                     </form>
-
-            </div>
-
-            <div id="fileCheck" style="display: none">
-                <video id="video" controls></video>
-
-                <div class="btnWrap">
-
                 </div>
 
             </div>

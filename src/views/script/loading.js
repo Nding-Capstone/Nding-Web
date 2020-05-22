@@ -1,15 +1,15 @@
+
+
 async function runModel(callback){
     console.log('runModel in js')
     fetch('/process/runModel')
-    .then(function(){
+    .then(function(req,res){
         callback();
     })
-    
 }
 
 function showNextButton(){
     console.log('callback');
-    
     
     var ment = document.getElementById('loadingMent');
     var next = document.getElementById('nextButton');
@@ -19,8 +19,3 @@ function showNextButton(){
 }
 
 runModel(showNextButton);
-
-/*.then(res => {
-    console.log('callback')
-    
-});*/
