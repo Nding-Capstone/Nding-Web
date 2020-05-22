@@ -22,7 +22,7 @@ module.exports = {
         // in close event we are sure that stream is from child process is closed
         python.on('close', (code) => {
             console.log(`child process close all stdio with code ${code}`);
-            callback(largeDataSet);
+            callback(largeDataSet[0]);
         });
 
     }

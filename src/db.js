@@ -5,6 +5,7 @@ var qs = require('querystring');
 var template = require('./template.js');
 var path = require('path');
 var sanitizeHtml = require('sanitize-html');
+
 var mysql = require('mysql');
 var express = require('express') // npm install express --save
 var app = express()
@@ -16,7 +17,10 @@ var db = mysql.createConnection({
   password:'dancearch',
   database:'dancearch'
 });
+
 db.connect();
+
+
 
 app.use(express.static('src'));
 
@@ -24,6 +28,7 @@ var app = http.createServer(function(request,response){
     var _url = request.url;
     var queryData = url.parse(_url, true).query;
     var pathname = url.parse(_url, true).pathname;
+    
     if(pathname === '/'){
       if(queryData.id === undefined){
         db.query(`SELECT * FROM Song`, function(error,Song){
