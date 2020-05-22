@@ -5,7 +5,7 @@ function checkVideo(){
 
     const inputFile = document.getElementById('file');
 
-
+    document.getElementById('videoIcon').style.display = 'none';
     document.getElementById('fileCheck').style.display = 'inline-block';
     // document.getElementById('fileUpload').style.display = 'none';
 
