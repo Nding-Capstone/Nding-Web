@@ -60,8 +60,17 @@ body {
     margin-bottom: 50px;
 }
 
-.loading #nextButton{
+.loading .nextButton{
     display: none;
+}
+.loading button{
+    width: 90px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    margin: 10px;
+    cursor: pointer;
 }
 
 /*
