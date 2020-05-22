@@ -17,12 +17,15 @@
             DANCEARCH
         </div> <!--header-->
         <div class="content">
-            <div class="loadIconWrap">
+            <div id="loadIcon" class="loadIconWrap">
                 <div class="lds-facebook"><div></div><div></div><div></div></div>
             </div>
-            <div class="loadingMent">
-                잠시만 기다려주세요,  안무를 검색중입니다!
+            <div id="loadingMent">
+                잠시만 기다려주세요,  안무를 검색중입니다!!
             </div>
+            <form id="nextButton" style="display: none;" action="/process/toResult" method="post">
+                <button type="submit">next</button>
+            </form>
         </div>
     </div>
 

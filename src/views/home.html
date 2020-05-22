@@ -25,10 +25,15 @@
             당신의 안무를 검색하세요!
         </div>
         <div class="fileUpload">
-           
-            <div >
+           </div>
+            <div id="videoIcon">
                 <label for="file"><i class="far fa-file-video"></i></label>
-                <button type="reset">RELOAD</button>
+            </div>
+
+            <div id="fileCheck" style="display: none">
+                <video id="video" controls autoplay></video>
+                <div class="btnWrap">
+                    <button type="reset">RELOAD</button>
                     <form
                         method="post"
                         enctype="multipart/form-data"
@@ -40,19 +45,9 @@
                                 onchange="checkVideo(event)"/>
                         <button type="submit" id="nextBtn" name="video">NEXT</button>
                     </form>
-                
-            </div>
-
-            <div id="fileCheck" style="display: none">
-                <video id="video" controls autoplay></video>
-
-                <div class="btnWrap">
-                    
                 </div>
-
-            </div>
+            </div> <!--display after uploading video-->
         </div>
-    </div>
 </div>
 </body>
 </html>

@@ -1,6 +1,14 @@
 var express =require('express');
 var http = require('http');
 var path = require('path');
+var skeleton = require('./modules/extract-skeleton.js');
+var cookieParser = require('cookie-parser');
+var expressSession = require('express-session');
+var fs = require('fs');
+var url = require('url');
+var qs = require('querystring');
+var mysql = require('mysql');
+var sanitizeHtml = require('sanitize-html');
 
 var app = express();
 var router = express.Router();
@@ -8,12 +16,27 @@ var static = require('serve-static');
 var multer = require('multer');
 var cors = require('cors');
 
+const {spawn} = require('child_process');
 const INPUT_VIDEO_DIRECTORY = 'uploads';
 const INPUT_VIDEO_NAME = 'input.mp4';
 
-app.use('/views', static(path.join(__dirname, 'views')));
+var db = mysql.createConnection({
+    host:'localhost',
+    user:'root',
+    password:'dancearch',
+    database:'dancearch'
+});
 
+
+app.use('/views', static(path.join(__dirname, 'views')));
 app.use(cors());
+app.use(cookieParser());
+
+app.use(expressSession({
+    secret: 'password',
+    resave: true,
+    saveUninitialized: true
+}));
 
 
 var storage = multer.diskStorage({
@@ -32,9 +55,7 @@ var upload = multer({
     }
 })
 
-
 router.route('/').get(function(req, res, next){
-    console.log('hi');
     res.redirect('/views/home.html');
 })
 
@@ -56,24 +77,115 @@ router.route('/process/videoUpload').post(upload.array('video', 1), function(req
         mimetype = files[0].mimetype;
         size = files[0].size;
 
-        //res.redirect('/views/loading.html');
+
+        res.redirect('/views/loading.html');
+
+        return;
 
     } catch(err) {
         console.dir(err.stack);
     }
 }) // /process/photo
 
-router.route('/views/loading.html').get(function(res, req, next) {
-    res.redirect('/process/extractSkeletoneVector');
+router.route('/process/runModel').get(async function(req, res) {
+        console.log('run model');
+        
+
+        skeleton.run(function(list){
+            datas = list.slice(9, -3).split(',').map(function(item){return parseInt(item, 10)}); 
+            console.log(datas);
+            res.cookie('rank', {
+                rank: datas
+            })
+            res.end();
+        })   
+        
+            /*
+            db.query(`SELECT * FROM Song WHERE id=`+datas[0],  await function(err, data){
+                console.log('data:', data);
+                res.cookie('first', {
+                    title: data[0].title,
+                    singer: data[0].singer,
+                    album: data[0].img,
+                    link: data[0].link
+                })
+            });
+
+            db.query(`SELECT * FROM Song WHERE id=`+datas[1],  await function(err, data){
+                console.log('data:', data);
+                res.cookie('second', {
+                    title: data[0].title,
+                    singer: data[0].singer,
+                    album: data[0].img,
+                    link: data[0].link
+                })
+            });
+
+            db.query(`SELECT * FROM Song WHERE id=`+datas[2],  await function(err, data){
+                console.log('data:', data[0]);
+
+                console.log('data:', data[0].title);
+                res.cookie('third', {
+                    title: data[0].title,
+                    singer: data[0].singer,
+                    album: data[0].img,
+                    link: data[0].link
+                })
+                res.end();     
+            });
+            */
+});
+
+router.route('/process/toResult').post(function(req, res, next){
+
+    data = req.cookies.rank.rank
+
+
+    db.query(`SELECT * FROM Song WHERE id=`+datas[0], function(err, data){
+        console.log('data:', data);
+        res.cookie('first', {
+            title: data[0].title,
+            singer: data[0].singer,
+            album: data[0].img,
+            link: data[0].link
+        })
+    });
+
+    db.query(`SELECT * FROM Song WHERE id=`+datas[1], function(err, data){
+        console.log('data:', data);
+        res.cookie('second', {
+            title: data[0].title,
+            singer: data[0].singer,
+            album: data[0].img,
+            link: data[0].link
+        })
+    });
+
+    db.query(`SELECT * FROM Song WHERE id=`+datas[2], function(err, data){
+        console.log('data:', data[0]);
+
+        console.log('data:', data[0].title);
+        res.cookie('third', {
+            title: data[0].title,
+            singer: data[0].singer,
+            album: data[0].img,
+            link: data[0].link
+        })
+        res.redirect('/views/result.html')
+
+        res.end();     
+    });
+    
 })
 
-router.route('/process/extractSkeletoneVector').get(function(res, req, next) {
-    console.log('/precess/extractSkeletoneVector 호출됨');
-})
+
 
 app.use('/', router);
 
+
 http.createServer(app).listen('3000',
 function(){
+
     console.log('Express 서버가 3000번 포트에서 시작됨.');
+    db.connect();
 });
