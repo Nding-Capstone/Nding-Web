@@ -79,11 +79,27 @@ body {
 }
 
 .result .rank {
+    display: inline-block;
     color: white;
     font-size: 30px;
+    height: 40px;
+    width: 50%;
     font-weight: bold;
     margin-bottom: 5px;
     margin-left: 10px;
+}
+
+.result .score {
+    display: flex;
+    width: calc(50% - 10px);
+    float: right;
+    height: 35px;
+    justify-content: center;
+    color: #fad961;
+    font-size: 20px;
+    margin-bottom: 5px;
+    align-items: flex-end;
+
 }
 
 .result .resultBoxWrap:hover {

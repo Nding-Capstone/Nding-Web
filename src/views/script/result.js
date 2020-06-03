@@ -4,11 +4,12 @@ function getRankData(){
     var first = getCookie('first');
     var second = getCookie('second');
     var third = getCookie('third');
+    var score = getCookie('score');
 
-    console.log(first);
-    setData(first, 'first');
-    setData(second, 'second');
-    setData(third, 'third');
+
+    setData(first, score[0], 'first');
+    setData(second, score[1], 'second');
+    setData(third, score[2], 'third');
 
 
 }
@@ -30,13 +31,15 @@ function getCookie(cname){
         return "";
 }
 
-function setData(cookie, rank){
+function setData(cookie, scoreD, rank){
     var title = document.getElementById(rank+'Title');
     var singer = document.getElementById(rank+'Singer');
     var img = document.getElementById(rank + 'Img');
+    var score = document.getElementById(rank + 'Score');
 
     title.innerHTML = cookie.title;
     singer.innerHTML = cookie.singer;
+    score.innerHTML = scoreD+'%';
     img.src = 'image/'+cookie.title+'.png';
 }
 window.onload = function(){

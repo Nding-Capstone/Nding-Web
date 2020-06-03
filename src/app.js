@@ -23,7 +23,7 @@ const INPUT_VIDEO_NAME = 'input.mp4';
 var db = mysql.createConnection({
     host:'localhost',
     user:'root',
-    password:'dancearch',
+    password:'root',
     database:'dancearch'
 });
 
@@ -92,53 +92,23 @@ router.route('/process/runModel').get(async function(req, res) {
         
 
         skeleton.run(function(list){
-            datas = list.slice(9, -3).split(',').map(function(item){return parseInt(item, 10)}); 
-            console.log(datas);
+            console.log('list : ', list);
+            datas = list[0].slice(0,-2).split('\r\n')
+            label = datas[0].slice(1, -1).split(',').map(function(item){return parseInt(item)})
+            scores =datas[1].slice(1, -1).split(',').map(function(item){return parseFloat(item).toFixed(2)})
+            console.log(label)
+
             res.cookie('rank', {
-                rank: datas
+                rank: label,
             })
+            res.cookie('score', scores)
             res.end();
         })   
-        
-            /*
-            db.query(`SELECT * FROM Song WHERE id=`+datas[0],  await function(err, data){
-                console.log('data:', data);
-                res.cookie('first', {
-                    title: data[0].title,
-                    singer: data[0].singer,
-                    album: data[0].img,
-                    link: data[0].link
-                })
-            });
-
-            db.query(`SELECT * FROM Song WHERE id=`+datas[1],  await function(err, data){
-                console.log('data:', data);
-                res.cookie('second', {
-                    title: data[0].title,
-                    singer: data[0].singer,
-                    album: data[0].img,
-                    link: data[0].link
-                })
-            });
-
-            db.query(`SELECT * FROM Song WHERE id=`+datas[2],  await function(err, data){
-                console.log('data:', data[0]);
-
-                console.log('data:', data[0].title);
-                res.cookie('third', {
-                    title: data[0].title,
-                    singer: data[0].singer,
-                    album: data[0].img,
-                    link: data[0].link
-                })
-                res.end();     
-            });
-            */
 });
 
 router.route('/process/toResult').post(function(req, res, next){
-
-    data = req.cookies.rank.rank
+    console.log(req.cookies.rank.rank)
+    datas = req.cookies.rank.rank
 
 
     db.query(`SELECT * FROM Song WHERE id=`+datas[0], function(err, data){
