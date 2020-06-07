@@ -35,11 +35,15 @@ function setData(cookie, scoreD, rank){
     var title = document.getElementById(rank+'Title');
     var singer = document.getElementById(rank+'Singer');
     var img = document.getElementById(rank + 'Img');
+    var box = document.getElementById(rank+'Box');
     var score = document.getElementById(rank + 'Score');
 
     title.innerHTML = cookie.title;
     singer.innerHTML = cookie.singer;
     score.innerHTML = scoreD+'%';
+    box.addEventListener("click", function(){
+
+        location.href = cookie.link});
     img.src = 'image/'+cookie.title+'.png';
 }
 window.onload = function(){
